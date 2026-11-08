@@ -1,0 +1,49 @@
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><c:out value="${titulo}" /> · Merca Fácil</title>
+    <link rel="stylesheet" href="<c:url value='/css/estilos.css' />">
+</head>
+<body>
+<header class="cabecera">
+    <a class="marca" href="<c:url value='/' />">Merca Fácil</a>
+</header>
+<div class="contenedor">
+    <nav class="menu">
+        <h2>Catálogos</h2>
+        <a href="<c:url value='/grupos' />">Grupos</a>
+        <a href="<c:url value='/unidades' />">Unidades de medida</a>
+        <a href="<c:url value='/tipos-pago' />">Tipos de pago</a>
+        <a href="<c:url value='/tipos-precio' />">Tipos de precio</a>
+        <h2>Maestros</h2>
+        <a href="<c:url value='/articulos' />">Artículos</a>
+        <a href="<c:url value='/proveedores' />">Proveedores</a>
+        <a href="<c:url value='/almacenes' />">Almacenes</a>
+        <a href="<c:url value='/clientes' />">Clientes</a>
+        <h2>Relaciones</h2>
+        <a href="<c:url value='/articulo-proveedor' />">Artículo–Proveedor</a>
+        <a href="<c:url value='/inventario' />">Inventario</a>
+        <a href="<c:url value='/articulo-precio' />">Precios de artículo</a>
+        <h2>Movimientos</h2>
+        <a href="<c:url value='/compras' />">Compras</a>
+        <a href="<c:url value='/ventas' />">Ventas</a>
+        <a href="<c:url value='/pedidos' />">Pedidos</a>
+        <h2>Consultas</h2>
+        <a href="<c:url value='/detalle-ventas' />">Detalle de ventas</a>
+    </nav>
+    <main class="contenido">
+        <h1><c:out value="${titulo}" /></h1>
+        <c:if test="${not empty sessionScope.flashExito}">
+            <p class="exito"><c:out value="${sessionScope.flashExito}" /></p>
+            <c:remove var="flashExito" scope="session" />
+        </c:if>
+        <c:if test="${not empty sessionScope.flashError}">
+            <p class="alerta"><c:out value="${sessionScope.flashError}" /></p>
+            <c:remove var="flashError" scope="session" />
+        </c:if>
+        <c:if test="${not empty error}">
+            <p class="alerta"><c:out value="${error}" /></p>
+        </c:if>

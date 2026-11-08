@@ -1,0 +1,14 @@
+<tr class="fila-detalle">
+    <td>
+        <select name="codArticulo" required>
+            <option value="">Seleccione…</option>
+            <c:forEach var="a" items="${articulos}">
+                <option value="<c:out value='${a.codArticulo}' />" data-precio="${a.valor}" ${a.codArticulo eq f.codArticulo ? 'selected' : ''}><c:out value="${a.codArticulo} - ${a.nombreArticulo}" /></option>
+            </c:forEach>
+        </select>
+    </td>
+    <td><input name="cantidad" type="number" min="1" step="1" required value="<c:out value='${f.cantidad}' />"></td>
+    <td class="precio"></td>
+    <td class="subtotal"></td>
+    <td><button type="button" class="boton peligro quitar">Quitar</button></td>
+</tr>
