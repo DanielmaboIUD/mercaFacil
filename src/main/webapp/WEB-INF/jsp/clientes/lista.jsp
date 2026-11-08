@@ -3,6 +3,13 @@
 <c:set var="titulo" value="Clientes" />
 <%@ include file="/WEB-INF/jsp/layout/header.jspf" %>
 <p><a class="boton" href="<c:url value='/clientes?accion=nuevo' />">Nuevo cliente</a></p>
+<form class="filtro" method="get" action="<c:url value='/clientes' />">
+    <input type="search" name="q" maxlength="100" placeholder="Buscar por palabra clave" aria-label="Buscar" value="<c:out value='${q}' />">
+    <button class="boton" type="submit">Buscar</button>
+    <c:if test="${not empty q}">
+        <a class="boton secundario" href="<c:url value='/clientes' />">Limpiar</a>
+    </c:if>
+</form>
 <table class="tabla">
     <thead>
     <tr><th>Cédula</th><th>Nombre</th><th>Dirección</th><th>Teléfono</th><th>Acciones</th></tr>
@@ -18,12 +25,14 @@
                 <c:url var="urlEditar" value="/clientes">
                     <c:param name="accion" value="editar" />
                     <c:param name="pagina" value="${paginacion.numero}" />
+                    <c:param name="q" value="${q}" />
                     <c:param name="id" value="${x.cedula}" />
                 </c:url>
                 <a class="boton secundario" href="${urlEditar}">Editar</a>
                 <form method="post" action="<c:url value='/clientes' />">
                     <input type="hidden" name="accion" value="eliminar">
                     <input type="hidden" name="pagina" value="${paginacion.numero}">
+                    <input type="hidden" name="q" value="<c:out value='${q}' />">
                     <input type="hidden" name="id" value="<c:out value='${x.cedula}' />">
                     <button class="boton peligro" type="submit" onclick="return confirm('¿Eliminar este registro?')">Eliminar</button>
                 </form>

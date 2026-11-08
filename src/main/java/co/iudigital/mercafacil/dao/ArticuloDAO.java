@@ -19,14 +19,16 @@ public class ArticuloDAO implements DAO<Articulo, String> {
             "SELECT cod_articulo, nombre, cod_unidad, cod_grupo FROM articulo WHERE cod_articulo = ?";
     private static final String LISTAR =
             "SELECT cod_articulo, nombre, cod_unidad, cod_grupo FROM articulo ORDER BY cod_articulo";
-    private static final String CONTAR = "SELECT count(*) FROM articulo";
+    private static final String FILTRADOS =
+            " FROM articulo a "
+                    + "JOIN unidad_medida u ON u.cod_unidad = a.cod_unidad "
+                    + "JOIN grupo g ON g.cod_grupo = a.cod_grupo"
+                    + FiltroSQL.contiene("a.cod_articulo", "a.nombre", "u.descripcion", "g.descripcion");
+    private static final String CONTAR = "SELECT count(*)" + FILTRADOS;
     private static final String LISTAR_PAGINA =
             "SELECT a.cod_articulo, a.nombre, a.cod_unidad, a.cod_grupo, "
-                    + "u.descripcion AS descripcion_unidad, g.descripcion AS descripcion_grupo "
-                    + "FROM articulo a "
-                    + "JOIN unidad_medida u ON u.cod_unidad = a.cod_unidad "
-                    + "JOIN grupo g ON g.cod_grupo = a.cod_grupo "
-                    + "ORDER BY a.cod_articulo LIMIT ? OFFSET ?";
+                    + "u.descripcion AS descripcion_unidad, g.descripcion AS descripcion_grupo"
+                    + FILTRADOS + " ORDER BY a.cod_articulo LIMIT ? OFFSET ?";
     private static final String ACTUALIZAR =
             "UPDATE articulo SET nombre = ?, cod_unidad = ?, cod_grupo = ? WHERE cod_articulo = ?";
     private static final String ELIMINAR = "DELETE FROM articulo WHERE cod_articulo = ?";
@@ -64,22 +66,25 @@ public class ArticuloDAO implements DAO<Articulo, String> {
         }
     }
 
-    public int contar() {
+    public int contar(String filtro) {
         try (Connection conexion = ConexionBD.obtenerConexion();
-             PreparedStatement ps = conexion.prepareStatement(CONTAR);
-             ResultSet rs = ps.executeQuery()) {
-            rs.next();
-            return rs.getInt(1);
+             PreparedStatement ps = conexion.prepareStatement(CONTAR)) {
+            ps.setString(1, filtro);
+            try (ResultSet rs = ps.executeQuery()) {
+                rs.next();
+                return rs.getInt(1);
+            }
         } catch (SQLException e) {
             throw ErroresSQL.traducir(e, false);
         }
     }
 
-    public List<ArticuloListado> listarPagina(int desplazamiento, int tamano) {
+    public List<ArticuloListado> listarPagina(String filtro, int desplazamiento, int tamano) {
         try (Connection conexion = ConexionBD.obtenerConexion();
              PreparedStatement ps = conexion.prepareStatement(LISTAR_PAGINA)) {
-            ps.setInt(1, tamano);
-            ps.setInt(2, desplazamiento);
+            ps.setString(1, filtro);
+            ps.setInt(2, tamano);
+            ps.setInt(3, desplazamiento);
             try (ResultSet rs = ps.executeQuery()) {
                 List<ArticuloListado> lista = new ArrayList<>();
                 while (rs.next()) {

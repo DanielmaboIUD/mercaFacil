@@ -5,6 +5,7 @@
 <form class="formulario" method="post" action="<c:url value='/proveedores' />">
     <input type="hidden" name="accion" value="guardar">
     <input type="hidden" name="pagina" value="<c:out value='${param.pagina}' />">
+    <input type="hidden" name="q" value="<c:out value='${param.q}' />">
     <input type="hidden" name="esNuevo" value="${esNuevo}">
     <label for="nit">NIT</label>
     <input id="nit" name="nit" maxlength="15" required
@@ -20,7 +21,7 @@
            value="<c:out value='${proveedor.telefono}' />">
     <div class="acciones">
         <button class="boton" type="submit">Guardar</button>
-        <c:url var="urlCancelar" value="/proveedores"><c:param name="pagina" value="${param.pagina}" /></c:url>
+        <c:url var="urlCancelar" value="/proveedores"><c:param name="pagina" value="${param.pagina}" /><c:param name="q" value="${param.q}" /></c:url>
         <a class="boton secundario" href="${urlCancelar}">Cancelar</a>
     </div>
 </form>
