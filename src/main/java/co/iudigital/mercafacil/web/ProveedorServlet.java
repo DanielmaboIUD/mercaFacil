@@ -117,15 +117,17 @@ public class ProveedorServlet extends HttpServlet {
             throws ServletException, IOException {
         List<Proveedor> proveedores = List.of();
         Pagina paginacion = Pagina.de(request.getParameter("pagina"), 0);
+        String filtro = Filtro.leer(request);
         try {
-            paginacion = Pagina.de(request.getParameter("pagina"), dao.contar());
-            proveedores = dao.listarPagina(paginacion.getOffset(), paginacion.getTamano());
+            paginacion = Pagina.de(request.getParameter("pagina"), dao.contar(filtro));
+            proveedores = dao.listarPagina(filtro, paginacion.getOffset(), paginacion.getTamano());
         } catch (DAOException e) {
             registrar(e);
             error = e.getMessage();
         }
         request.setAttribute("proveedores", proveedores);
         request.setAttribute("paginacion", paginacion);
+        request.setAttribute("q", filtro);
         request.setAttribute("error", error);
         request.getRequestDispatcher(LISTA).forward(request, response);
     }
@@ -141,7 +143,7 @@ public class ProveedorServlet extends HttpServlet {
 
     private void redirigirALista(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.sendRedirect(request.getContextPath() + "/proveedores?pagina="
-                + Pagina.leer(request.getParameter("pagina")));
+                + Pagina.leer(request.getParameter("pagina")) + Filtro.sufijo(request));
     }
 
     private void registrar(DAOException e) {

@@ -1,14 +1,14 @@
 <nav class="paginador">
     <c:if test="${paginacion.hayAnterior}">
-        <c:url var="urlPrimera" value="${rutaPaginador}"><c:param name="pagina" value="1" /></c:url>
-        <c:url var="urlAnterior" value="${rutaPaginador}"><c:param name="pagina" value="${paginacion.anterior}" /></c:url>
+        <c:url var="urlPrimera" value="${rutaPaginador}"><c:param name="pagina" value="1" /><c:if test="${not empty q}"><c:param name="q" value="${q}" /></c:if></c:url>
+        <c:url var="urlAnterior" value="${rutaPaginador}"><c:param name="pagina" value="${paginacion.anterior}" /><c:if test="${not empty q}"><c:param name="q" value="${q}" /></c:if></c:url>
         <a class="boton secundario" href="${urlPrimera}">Primera</a>
         <a class="boton secundario" href="${urlAnterior}">Anterior</a>
     </c:if>
     <span>Página ${paginacion.numero} de ${paginacion.totalPaginas} (${paginacion.totalRegistros} registros)</span>
     <c:if test="${paginacion.haySiguiente}">
-        <c:url var="urlSiguiente" value="${rutaPaginador}"><c:param name="pagina" value="${paginacion.siguiente}" /></c:url>
-        <c:url var="urlUltima" value="${rutaPaginador}"><c:param name="pagina" value="${paginacion.totalPaginas}" /></c:url>
+        <c:url var="urlSiguiente" value="${rutaPaginador}"><c:param name="pagina" value="${paginacion.siguiente}" /><c:if test="${not empty q}"><c:param name="q" value="${q}" /></c:if></c:url>
+        <c:url var="urlUltima" value="${rutaPaginador}"><c:param name="pagina" value="${paginacion.totalPaginas}" /><c:if test="${not empty q}"><c:param name="q" value="${q}" /></c:if></c:url>
         <a class="boton secundario" href="${urlSiguiente}">Siguiente</a>
         <a class="boton secundario" href="${urlUltima}">Última</a>
     </c:if>

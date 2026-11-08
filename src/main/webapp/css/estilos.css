@@ -79,6 +79,9 @@ body {
 .boton.secundario { color: var(--primario); background: transparent; }
 .boton.peligro { background: var(--peligro); border-color: var(--peligro); }
 
+.filtro { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.filtro input { flex: 1; min-width: 200px; max-width: 420px; padding: 8px; font: inherit; border: 1px solid var(--borde); border-radius: 4px; }
+
 .paginador { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 16px; }
 
 .formulario { max-width: 480px; display: flex; flex-direction: column; gap: 6px; }

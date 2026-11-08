@@ -18,8 +18,10 @@ public class ProveedorDAO implements DAO<Proveedor, String> {
             "SELECT nit, nombre, direccion, telefono FROM proveedor WHERE nit = ?";
     private static final String LISTAR =
             "SELECT nit, nombre, direccion, telefono FROM proveedor ORDER BY nit";
-    private static final String CONTAR = "SELECT count(*) FROM proveedor";
-    private static final String LISTAR_PAGINA = LISTAR + " LIMIT ? OFFSET ?";
+    private static final String FILTRO = FiltroSQL.contiene("nit", "nombre", "direccion", "telefono");
+    private static final String CONTAR = "SELECT count(*) FROM proveedor" + FILTRO;
+    private static final String LISTAR_PAGINA =
+            "SELECT nit, nombre, direccion, telefono FROM proveedor" + FILTRO + " ORDER BY nit LIMIT ? OFFSET ?";
     private static final String ACTUALIZAR =
             "UPDATE proveedor SET nombre = ?, direccion = ?, telefono = ? WHERE nit = ?";
     private static final String ELIMINAR = "DELETE FROM proveedor WHERE nit = ?";
@@ -57,22 +59,25 @@ public class ProveedorDAO implements DAO<Proveedor, String> {
         }
     }
 
-    public int contar() {
+    public int contar(String filtro) {
         try (Connection conexion = ConexionBD.obtenerConexion();
-             PreparedStatement ps = conexion.prepareStatement(CONTAR);
-             ResultSet rs = ps.executeQuery()) {
-            rs.next();
-            return rs.getInt(1);
+             PreparedStatement ps = conexion.prepareStatement(CONTAR)) {
+            ps.setString(1, filtro);
+            try (ResultSet rs = ps.executeQuery()) {
+                rs.next();
+                return rs.getInt(1);
+            }
         } catch (SQLException e) {
             throw ErroresSQL.traducir(e, false);
         }
     }
 
-    public List<Proveedor> listarPagina(int desplazamiento, int tamano) {
+    public List<Proveedor> listarPagina(String filtro, int desplazamiento, int tamano) {
         try (Connection conexion = ConexionBD.obtenerConexion();
              PreparedStatement ps = conexion.prepareStatement(LISTAR_PAGINA)) {
-            ps.setInt(1, tamano);
-            ps.setInt(2, desplazamiento);
+            ps.setString(1, filtro);
+            ps.setInt(2, tamano);
+            ps.setInt(3, desplazamiento);
             try (ResultSet rs = ps.executeQuery()) {
                 List<Proveedor> lista = new ArrayList<>();
                 while (rs.next()) {

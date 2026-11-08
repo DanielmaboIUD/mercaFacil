@@ -117,15 +117,17 @@ public class AlmacenServlet extends HttpServlet {
             throws ServletException, IOException {
         List<Almacen> almacenes = List.of();
         Pagina paginacion = Pagina.de(request.getParameter("pagina"), 0);
+        String filtro = Filtro.leer(request);
         try {
-            paginacion = Pagina.de(request.getParameter("pagina"), dao.contar());
-            almacenes = dao.listarPagina(paginacion.getOffset(), paginacion.getTamano());
+            paginacion = Pagina.de(request.getParameter("pagina"), dao.contar(filtro));
+            almacenes = dao.listarPagina(filtro, paginacion.getOffset(), paginacion.getTamano());
         } catch (DAOException e) {
             registrar(e);
             error = e.getMessage();
         }
         request.setAttribute("almacenes", almacenes);
         request.setAttribute("paginacion", paginacion);
+        request.setAttribute("q", filtro);
         request.setAttribute("error", error);
         request.getRequestDispatcher(LISTA).forward(request, response);
     }
@@ -141,7 +143,7 @@ public class AlmacenServlet extends HttpServlet {
 
     private void redirigirALista(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.sendRedirect(request.getContextPath() + "/almacenes?pagina="
-                + Pagina.leer(request.getParameter("pagina")));
+                + Pagina.leer(request.getParameter("pagina")) + Filtro.sufijo(request));
     }
 
     private void registrar(DAOException e) {
