@@ -17,7 +17,7 @@ public final class ConexionBD {
     }
 
     public static Connection obtenerConexion() {
-        Properties propiedades = cargarPropiedades();
+        Properties propiedades = propiedades();
         try {
             // Dentro de Tomcat, DriverManager no siempre detecta los drivers de WEB-INF/lib.
             Class.forName("org.postgresql.Driver");
@@ -32,7 +32,7 @@ public final class ConexionBD {
         }
     }
 
-    private static Properties cargarPropiedades() {
+    public static Properties propiedades() {
         try (InputStream entrada = ConexionBD.class.getClassLoader().getResourceAsStream(ARCHIVO)) {
             if (entrada == null) {
                 throw new DAOException("No se encontró " + ARCHIVO + " en el classpath.");
@@ -45,7 +45,7 @@ public final class ConexionBD {
         }
     }
 
-    private static String mensajePara(SQLException e) {
+    static String mensajePara(SQLException e) {
         String estado = e.getSQLState() == null ? "" : e.getSQLState();
         return switch (estado) {
             // El driver reporta 08004 cuando la contraseña está vacía.
