@@ -1,6 +1,6 @@
 package co.iudigital.mercafacil.web;
 
-import co.iudigital.mercafacil.dao.ClienteDAO;
+import co.iudigital.mercafacil.dao.ClienteJpaDAO;
 import co.iudigital.mercafacil.exception.DAOException;
 import co.iudigital.mercafacil.model.Cliente;
 import jakarta.servlet.ServletException;
@@ -18,7 +18,8 @@ public class ClienteServlet extends HttpServlet {
     private static final String LISTA = "/WEB-INF/jsp/clientes/lista.jsp";
     private static final String FORMULARIO = "/WEB-INF/jsp/clientes/formulario.jsp";
 
-    private final ClienteDAO dao = new ClienteDAO();
+    // JDBC: private final ClienteDAO dao = new ClienteDAO();
+    private final ClienteJpaDAO dao = new ClienteJpaDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
