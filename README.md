@@ -87,6 +87,31 @@ Abre <http://localhost:8080/merca_facil_web/>.
 2. Clic derecho en el servidor → **Add Deployment** → selecciona el `.war`.
 3. Inicia el servidor, o usa **Publish Server** si ya estaba corriendo.
 
+## JPA/Hibernate en Clientes
+
+La pantalla **Clientes** usa JPA con Hibernate ORM 7.4; el resto de la aplicación sigue con JDBC.
+
+| Archivo | Papel |
+|---|---|
+| `META-INF/persistence.xml` | Unidad `mercaFacilPU`, sin credenciales; Hibernate no genera ni altera el esquema |
+| `config/JpaUtil` | Crea el único `EntityManagerFactory` con los datos de `db.properties` |
+| `config/JpaListener` | Abre el `EntityManagerFactory` al iniciar la app y lo cierra al detenerla |
+| `model/Cliente` | Entidad mapeada a la tabla `cliente` con anotaciones |
+| `dao/ClienteJpaDAO` | Mismos métodos que `ClienteDAO`, implementados con JPA |
+
+La consola de Tomcat muestra el SQL que genera Hibernate.
+
+**Volver a JDBC:** en `web/ClienteServlet`, cambia el `import` y la línea del DAO por `private final ClienteDAO dao = new ClienteDAO();`.
+
+| Aspecto | JDBC (`ClienteDAO`) | JPA (`ClienteJpaDAO`) |
+|---|---|---|
+| Consultas | SQL escrito a mano sobre tablas y columnas | JPQL sobre entidades y atributos; Hibernate genera el SQL |
+| Mapeo | `ResultSet` → objeto, columna por columna | Anotaciones `@Entity`, `@Id` y `@Column` |
+| Actualizar | `UPDATE` explícito | Setters sobre la entidad administrada (*dirty checking*) |
+| Transacciones | Autocommit de la conexión | `begin` / `commit` / `rollback` del `EntityManager` |
+| Paginación | `LIMIT ? OFFSET ?` | `setFirstResult` / `setMaxResults` |
+| Errores | `SQLException` | `PersistenceException`; se busca la `SQLException` interna para dar el mismo mensaje |
+
 ## Solución de problemas
 
 | Síntoma | Qué revisar |
