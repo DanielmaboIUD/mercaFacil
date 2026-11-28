@@ -36,6 +36,13 @@
     </nav>
     <main class="contenido">
         <h1><c:out value="${titulo}" /></h1>
+        <%-- Solo en pantallas que llegan desde un servlet; sin atributo, el servlet usa JDBC. --%>
+        <c:if test="${not empty requestScope['jakarta.servlet.forward.servlet_path']}">
+            <c:set var="tecnologia" value="${empty accesoDatos ? 'JDBC' : accesoDatos}" />
+            <p class="acceso-datos ${tecnologia == 'JDBC' ? 'jdbc' : 'jpa'}">
+                Acceso a datos: <strong><c:out value="${tecnologia}" /></strong>
+            </p>
+        </c:if>
         <c:if test="${not empty sessionScope.flashExito}">
             <p class="exito"><c:out value="${sessionScope.flashExito}" /></p>
             <c:remove var="flashExito" scope="session" />
