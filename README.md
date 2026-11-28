@@ -101,6 +101,8 @@ La pantalla **Clientes** usa JPA con Hibernate ORM 7.4; el resto de la aplicaci�
 
 La consola de Tomcat muestra el SQL que genera Hibernate.
 
+Cada pantalla muestra bajo el título la etiqueta **Acceso a datos: JPA (Hibernate)** o **Acceso a datos: JDBC**, según el DAO que use su servlet (`web/AccesoDatos`).
+
 **Volver a JDBC:** en `web/ClienteServlet`, cambia el `import` y la línea del DAO por `private final ClienteDAO dao = new ClienteDAO();`.
 
 | Aspecto | JDBC (`ClienteDAO`) | JPA (`ClienteJpaDAO`) |

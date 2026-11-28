@@ -130,6 +130,7 @@ public class ClienteServlet extends HttpServlet {
         request.setAttribute("paginacion", paginacion);
         request.setAttribute("q", filtro);
         request.setAttribute("error", error);
+        request.setAttribute(AccesoDatos.ATRIBUTO, AccesoDatos.de(dao));
         request.getRequestDispatcher(LISTA).forward(request, response);
     }
 
@@ -139,6 +140,7 @@ public class ClienteServlet extends HttpServlet {
         request.setAttribute("cliente", cliente);
         request.setAttribute("esNuevo", esNuevo);
         request.setAttribute("error", error);
+        request.setAttribute(AccesoDatos.ATRIBUTO, AccesoDatos.de(dao));
         request.getRequestDispatcher(FORMULARIO).forward(request, response);
     }
 
