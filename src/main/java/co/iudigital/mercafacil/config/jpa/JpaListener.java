@@ -1,4 +1,4 @@
-package co.iudigital.mercafacil.config;
+package co.iudigital.mercafacil.config.jpa;
 
 import co.iudigital.mercafacil.exception.DAOException;
 import jakarta.servlet.ServletContextEvent;

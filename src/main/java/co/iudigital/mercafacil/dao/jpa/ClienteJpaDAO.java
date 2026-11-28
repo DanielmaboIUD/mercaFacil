@@ -1,6 +1,7 @@
-package co.iudigital.mercafacil.dao;
+package co.iudigital.mercafacil.dao.jpa;
 
-import co.iudigital.mercafacil.config.JpaUtil;
+import co.iudigital.mercafacil.config.jpa.JpaUtil;
+import co.iudigital.mercafacil.dao.ErroresSQL;
 import co.iudigital.mercafacil.exception.DAOException;
 import co.iudigital.mercafacil.model.Cliente;
 import jakarta.persistence.EntityManager;

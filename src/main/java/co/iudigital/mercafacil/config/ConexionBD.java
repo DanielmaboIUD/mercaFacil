@@ -45,7 +45,7 @@ public final class ConexionBD {
         }
     }
 
-    static String mensajePara(SQLException e) {
+    public static String mensajePara(SQLException e) {
         String estado = e.getSQLState() == null ? "" : e.getSQLState();
         return switch (estado) {
             // El driver reporta 08004 cuando la contraseña está vacía.
