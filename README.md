@@ -94,10 +94,10 @@ La pantalla **Clientes** usa JPA con Hibernate ORM 7.4; el resto de la aplicaci�
 | Archivo | Papel |
 |---|---|
 | `META-INF/persistence.xml` | Unidad `mercaFacilPU`, sin credenciales; Hibernate no genera ni altera el esquema |
-| `config/JpaUtil` | Crea el único `EntityManagerFactory` con los datos de `db.properties` |
-| `config/JpaListener` | Abre el `EntityManagerFactory` al iniciar la app y lo cierra al detenerla |
+| `config/jpa/JpaUtil` | Crea el único `EntityManagerFactory` con los datos de `db.properties` |
+| `config/jpa/JpaListener` | Abre el `EntityManagerFactory` al iniciar la app y lo cierra al detenerla |
 | `model/Cliente` | Entidad mapeada a la tabla `cliente` con anotaciones |
-| `dao/ClienteJpaDAO` | Mismos métodos que `ClienteDAO`, implementados con JPA |
+| `dao/jpa/ClienteJpaDAO` | Mismos métodos que `ClienteDAO`, implementados con JPA |
 
 La consola de Tomcat muestra el SQL que genera Hibernate.
 

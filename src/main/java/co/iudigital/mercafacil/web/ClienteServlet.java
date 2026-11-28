@@ -1,6 +1,6 @@
 package co.iudigital.mercafacil.web;
 
-import co.iudigital.mercafacil.dao.ClienteJpaDAO;
+import co.iudigital.mercafacil.dao.jpa.ClienteJpaDAO;
 import co.iudigital.mercafacil.exception.DAOException;
 import co.iudigital.mercafacil.model.Cliente;
 import jakarta.servlet.ServletException;
